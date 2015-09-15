@@ -1,4 +1,8 @@
 # apache_softtek
 
-TODO: Enter the cookbook description here.
+Cookbook para instalar y configurar Apache en Servidores
+tipo RHEL, CENTOS, Debian y Ubuntu
 
+Softtek
+
+Generado por Diego De Fuentes Ceballos
