@@ -1,4 +1,5 @@
 .kitchen
 .kitchen/logs
+.kitchen.yml
 .git
 .gitignore
