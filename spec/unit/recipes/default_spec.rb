@@ -18,7 +18,7 @@ describe 'apache_softtek::default' do
     end
 	
 	it 'installs httpd' do
-	  expect(chef_run).to install_package('httpd') 
+	  expect(chef_run).to install_package('Install Apache') 
 	end
 	
 	it 'Enables httpd' do

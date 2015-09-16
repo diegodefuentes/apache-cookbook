@@ -27,4 +27,4 @@ template '/etc/httpd/conf/httpd.conf' do
  source 'httpd.conf.erb'
  mode '0644'
  notifies :restart, 'service[httpd]'
-end
+ end
