@@ -32,8 +32,8 @@ describe 'apache_softtek::default' do
 	it 'Modifies httpd.conf' do
 	  expect(chef_run).to create_template('/etc/httpd/conf/httpd.conf') 
 	end	
-	
-	it 'Modifies ssl.conf' do
+		
+    it 'Modifies ssl.conf' do
 	  expect(chef_run).to create_template('/etc/httpd/conf.d/ssl.conf') 
 	end	
 	
