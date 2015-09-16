@@ -205,6 +205,7 @@ default['apache']['OptionAllowOverride'] =  'None'
 default['apache']['OptionIndexes'] =  '-Indexes'
 default['apache']['OptionMultiViews'] =  'MultiViews'
 default['apache']['OptionNone'] =  'None'
+default['apache']['IncludesNoExec'] =  'IncludesNoExec'
 
 #
 # Controls who can get stuff from this server.
@@ -271,7 +272,6 @@ default['apache']['TypesConfig'] =  '/etc/mime.types'
 # keep browsers from trying to display binary files as though they are
 # text.
 #
-DefaultType text/plain
 default['apache']['DefaultType'] =  'text/plain'
 
 #
@@ -403,4 +403,11 @@ default['apache']['DefaultLanguage'] =  'es'
 # Simplified Chinese (zh-CN) - Spanish (es) - Traditional Chinese (zh-TW)
 #
 
+#
+# Specify a default charset for all content served; this enables
+# interpretation of all content as UTF-8 by default.  To use the
+# default browser choice (ISO-8859-1), or to allow the META tags
+# in HTML content to override this choice, comment out this
+# directive:
+#
 default['apache']['AddDefaultCharset'] =  'UTF-8'

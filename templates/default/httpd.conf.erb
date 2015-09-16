@@ -291,15 +291,6 @@ AddIcon /icons/blank.gif ^^BLANKICON^^
 
 DefaultIcon <%= node['apache']['DefaultIcon'] %>
 
-#
-# AddDescription allows you to place a short description after a file in
-# server-generated indexes.  These are only displayed for FancyIndexed
-# directories.
-# Format: AddDescription "description" filename
-#
-#AddDescription "GZIP compressed document" .gz
-#AddDescription "tar archive" .tar
-#AddDescription "GZIP compressed tar archive" .tgz
 
 ReadmeName <%= node['apache']['ReadmeName'] %>
 HeaderName <%= node['apache']['HeaderName'] %>
@@ -348,6 +339,11 @@ AddLanguage zh-TW .zh-tw
 #
 LanguagePriority en ca cs da de el eo es et fr he hr it ja ko ltz nl nn no pl pt pt-BR ru sv zh-CN zh-TW
 
+#
+# ForceLanguagePriority allows you to serve a result page rather than
+# MULTIPLE CHOICES (Prefer) [in case of a tie] or NOT ACCEPTABLE (Fallback)
+# [in case no accepted languages matched the available variants]
+#
 ForceLanguagePriority Prefer Fallback
 
 AddDefaultCharset <%= node['apache']['AddDefaultCharset'] %>
@@ -356,13 +352,25 @@ AddDefaultCharset <%= node['apache']['AddDefaultCharset'] %>
 AddType application/x-compress .Z
 AddType application/x-gzip .gz .tgz
 
+#
+#   MIME-types for downloading Certificates and CRLs
+#
 AddType application/x-x509-ca-cert .crt
 AddType application/x-pkcs7-crl    .crl
 
-
-
+#
+# For type maps (negotiated resources):
+# (This is enabled by default to allow the Apache "It Worked" page
+#  to be distributed in multiple languages.)
+#
 AddHandler type-map var
 
+#
+# Filters allow you to process content before it is sent to the client.
+#
+# To parse .shtml files for server-side includes (SSI):
+# (You will also need to add "Includes" to the "Options" directive.)
+#
 AddType text/html .shtml
 AddOutputFilter INCLUDES .shtml
 
@@ -375,11 +383,11 @@ Alias /error/ "<%= node['apache']['ErrorDirectory'] %>"
 <IfModule mod_include.c>
     <Directory "<%= node['apache']['ErrorDirectory'] %>">
         AllowOverride <%= node['apache']['OptionAllowOverride'] %>
-        Options IncludesNoExec
+        Options <%= node['apache']['OptionIncludesNoExec'] %>
         AddOutputFilter Includes html
         AddHandler type-map var
         Order <%= node['apache']['Order'] %>
-        Allow from all
+        Allow <%= node['apache']['Allow'] %>
         LanguagePriority en es de fr
         ForceLanguagePriority Prefer Fallback
     </Directory>
@@ -388,12 +396,23 @@ Alias /error/ "<%= node['apache']['ErrorDirectory'] %>"
 </IfModule>
 </IfModule>
 
+#
+# The following directives modify normal HTTP response behavior to
+# handle known problems with browser implementations.
+#
 BrowserMatch "Mozilla/2" nokeepalive
 BrowserMatch "MSIE 4\.0b2;" nokeepalive downgrade-1.0 force-response-1.0
 BrowserMatch "RealPlayer 4\.0" force-response-1.0
 BrowserMatch "Java/1\.0" force-response-1.0
 BrowserMatch "JDK/1\.0" force-response-1.0
 
+#
+# The following directive disables redirects on non-GET requests for
+# a directory that does not include the trailing slash.  This fixes a
+# problem with Microsoft WebFolders which does not appropriately handle
+# redirects for folders with DAV methods.
+# Same deal with Apple's DAV filesystem and Gnome VFS support for DAV.
+#
 BrowserMatch "Microsoft Data Access Internet Publishing Provider" redirect-carefully
 BrowserMatch "MS FrontPage" redirect-carefully
 BrowserMatch "^WebDrive" redirect-carefully
@@ -401,3 +420,42 @@ BrowserMatch "^WebDAVFS/1.[0123]" redirect-carefully
 BrowserMatch "^gnome-vfs/1.0" redirect-carefully
 BrowserMatch "^XML Spy" redirect-carefully
 BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
+
+
+### Section 3: Virtual Hosts
+#
+# VirtualHost: If you want to maintain multiple domains/hostnames on your
+# machine you can setup VirtualHost containers for them. Most configurations
+# use only name-based virtual hosts so the server doesn't need to worry about
+# IP addresses. This is indicated by the asterisks in the directives below.
+#
+# Please see the documentation at
+# <URL:http://httpd.apache.org/docs/2.2/vhosts/>
+# for further details before you try to setup virtual hosts.
+#
+# You may use the command line option '-S' to verify your virtual host
+# configuration.
+
+#
+# Use name-based virtual hosting.
+#
+#NameVirtualHost *:<%= node['apache']['port'] %>
+#
+# NOTE: NameVirtualHost cannot be used without a port specifier
+# (e.g. :80) if mod_ssl is being used, due to the nature of the
+# SSL protocol.
+#
+
+#
+# VirtualHost example:
+# Almost any Apache directive may go into a VirtualHost container.
+# The first VirtualHost section is used for requests without a known
+# server name.
+#
+#<VirtualHost *:80>
+#    ServerAdmin webmaster@dummy-host.example.com
+#    DocumentRoot /www/docs/dummy-host.example.com
+#    ServerName dummy-host.example.com
+#    ErrorLog logs/dummy-host.example.com-error_log
+#    CustomLog logs/dummy-host.example.com-access_log common
+#</VirtualHost>
