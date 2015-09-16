@@ -8,8 +8,21 @@ package 'Install Apache' do
   case node[:platform]
   when 'redhat', 'centos', 'fedora'
     package_name 'httpd'
+	action :install
   when 'ubuntu', 'debian'
     package_name 'apache2'
+	action :install
+  end
+end
+
+package 'Install SSL' do
+  case node[:platform]
+  when 'redhat', 'centos', 'fedora'
+  	package_name 'mod_ssl'
+	action :install
+  when 'ubuntu', 'debian'
+    package_name 'openssl'
+	action :install
   end
 end
 
@@ -25,6 +38,12 @@ end
 
 template '/etc/httpd/conf/httpd.conf' do
  source 'httpd.conf.erb'
+ mode '0644'
+ notifies :restart, 'service[httpd]'
+ end
+ 
+ template '/etc/httpd/conf.d/ssl.conf' do
+ source 'ssl.conf.erb'
  mode '0644'
  notifies :restart, 'service[httpd]'
  end
