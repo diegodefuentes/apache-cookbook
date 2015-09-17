@@ -26,24 +26,18 @@ package 'Install SSL' do
   end
 end
 
-service 'Apache' do
- case node[:platform]
- when 'centos','redhat','fedora'
-   service_name 'httpd'
- when 'ubuntu', 'debian'
-   service_name 'apache2'
-  end
-  action [ :enable, :start ]
+service 'httpd' do
+  action [ :enable ]
 end
 
-  template '/etc/httpd/conf/httpd.conf' do
+template '/etc/httpd/conf/httpd.conf' do
   source 'httpd.conf.erb'
   mode '0644'
-  notifies :restart, 'service[Apache]'
+  notifies :restart, 'service[httpd]'
  end
 
-  template '/etc/httpd/conf.d/ssl.conf' do
-  source 'ssl.conf.erb'
-  mode '0644'
-  notifies :restart, 'service[Apache]'
- end
+#template '/etc/httpd/conf.d/ssl.conf' do
+#  source 'ssl.conf.erb'
+#  mode '0644'
+#  notifies :restart, 'service[httpd]'
+# end
