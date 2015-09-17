@@ -237,7 +237,7 @@ Alias /icons/ "<%= node['apache']['IconsDirectory'] %>"
     DAVLockDB <%= node['apache']['DAVLockDB'] %>
 </IfModule>
 
-ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
+ScriptAlias /cgi-bin/ "<%= node['apache']['ScriptsDirectory'] %>"
 
 <Directory "<%= node['apache']['ScriptsDirectory'] %>">
     AllowOverride <%= node['apache']['OptionAllowOverride'] %>

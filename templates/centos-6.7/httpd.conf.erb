@@ -250,17 +250,7 @@ Alias /icons/ "<%= node['apache']['IconsDirectory'] %>"
     DAVLockDB <%= node['apache']['DAVLockDB'] %>
 </IfModule>
 
-#
-# ScriptAlias: This controls which directories contain server scripts.
-# ScriptAliases are essentially the same as Aliases, except that
-# documents in the realname directory are treated as applications and
-# run by the server when requested rather than as documents sent to the client.
-# The same rules about trailing "/" apply to ScriptAlias directives as to
-# Alias.
-#
-ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
-
-ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
+ScriptAlias /cgi-bin/ "<%= node['apache']['ScriptsDirectory'] %>"
 
 <Directory "<%= node['apache']['ScriptsDirectory'] %>">
     AllowOverride <%= node['apache']['OptionAllowOverride'] %>
