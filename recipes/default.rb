@@ -45,32 +45,39 @@ case node[:platform_version]
   mode '0644'
   notifies :restart, 'service[Apache]'
  end
-  template '/etc/httpd/conf.d/ssl6.conf' do
-  source 'ssl.conf.erb'
-  mode '0644'
-  notifies :restart, 'service[Apache]'
- end
- when '7.1'
+  when '7.1'
   template '/etc/httpd/conf/httpd.conf' do
   source 'httpd.conf7.erb'
   mode '0644'
   notifies :restart, 'service[Apache]'
  end
- when '5.11'
-  template '/etc/httpd/conf.d/ssl.conf' do
-  source 'ssl.conf5.erb'
-  mode '0644'
-  notifies :restart, 'service[Apache]'
  end
- end
- 
- 
  when 'ubuntu', 'debian'
   template '/etc/apache2/apache2.conf' do
   source 'apache.conf.erb'
   mode '0644'
   notifies :restart, 'service[Apache]'
   end
+end
+ 
+case node[:platform]
+when 'centos','redhat','fedora'
+case node[:platform_version]
+when '5.11'
+  template '/etc/httpd/conf.d/ssl.conf' do
+  source 'ssl.conf5.erb'
+  mode '0644'
+  notifies :restart, 'service[Apache]'
+ end
+ when '6.6'
+  template '/etc/httpd/conf.d/ssl6.conf' do
+  source 'ssl.conf.erb'
+  mode '0644'
+  notifies :restart, 'service[Apache]'
+ end
+
+end
+ when 'ubuntu', 'debian'
   template '/etc/apache2/conf-available/ssl.conf' do
   source 'ssl.conf.erb'
   mode '0644'
