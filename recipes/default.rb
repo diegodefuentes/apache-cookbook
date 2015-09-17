@@ -36,8 +36,8 @@ template '/etc/httpd/conf/httpd.conf' do
   notifies :restart, 'service[httpd]'
  end
 
-#template '/etc/httpd/conf.d/ssl.conf' do
-#  source 'ssl.conf.erb'
-#  mode '0644'
-#  notifies :restart, 'service[httpd]'
-# end
+template '/etc/httpd/conf.d/ssl.conf' do
+  source 'ssl.conf.erb'
+  mode '0644'
+  notifies :restart, 'service[httpd]'
+ end
