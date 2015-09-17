@@ -33,4 +33,4 @@ SSLVerifyClient      none
 AddType application/x-x509-ca-cert .crt
 AddType application/x-pkcs7-crl    .crl
 
-#NameVirtualHost *:<%= node['apache']['SSLport'] %>
+NameVirtualHost *:<%= node['apache']['SSLport'] %>

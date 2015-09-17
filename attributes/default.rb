@@ -29,7 +29,7 @@ default['apache']['ServerRoot'] =  '/etc/httpd'
 # /etc/sysconfig/httpd must be set appropriately if this location is
 # changed.
 #
-default['apache']['PidFile'] =  '/var/run/httpd.pid'
+default['apache']['PidFile'] =  'run/httpd.pid'
 
 #
 # Timeout: The number of seconds before receives and sends time out.
@@ -202,7 +202,7 @@ default['apache']['OptionFollowSymlinks'] =  'FollowSymLinks'
 #   Options FileInfo AuthConfig Limit
 #
 default['apache']['OptionAllowOverride'] =  'None'
-default['apache']['OptionIndexes'] =  '-Indexes'
+default['apache']['OptionIndexes'] =  'Indexes'
 default['apache']['OptionMultiViews'] =  'MultiViews'
 default['apache']['OptionNone'] =  'None'
 default['apache']['IncludesNoExec'] =  'IncludesNoExec'
