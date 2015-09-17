@@ -29,7 +29,7 @@ default['apache']['ServerRoot'] =  '/etc/httpd'
 # /etc/sysconfig/httpd must be set appropriately if this location is
 # changed.
 #
-default['apache']['PidFile'] =  'run/httpd.pid'
+default['apache']['PidFile'] =  '/var/run/httpd.pid'
 
 #
 # Timeout: The number of seconds before receives and sends time out.

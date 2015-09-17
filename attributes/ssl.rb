@@ -15,7 +15,7 @@ default['apache']['SSLSessionCacheTimeout'] = 300
 #   Semaphore:
 #   Configure the path to the mutual exclusion semaphore the
 #   SSL engine uses internally for inter-process synchronization.
-default['apache']['SSLMutex'] = 'file:/var/log/httpd/ssl_mutex'
+default['apache']['SSLMutex'] = 'file:/var/run/ssl_mutex'
 
 # Use separate log files for the SSL virtual host; note that LogLevel
 # is not inherited from httpd.conf.
