@@ -22,7 +22,7 @@ ServerAdmin <%= node['apache']['ServerAdmin'] %>
 
 
 <Directory <%= node['apache']['RootDirectory'] %>>
-    AllowOverride <%= node['apache']['OptionAllowOverride'] %>
+    AllowOverride none
 	Require all denied
 </Directory>
 
