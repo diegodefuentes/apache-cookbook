@@ -17,7 +17,7 @@ end
 
 package 'Install SSL' do
   case node[:platform]
-  when 'redhat', 'centos', 'fedora'
+  when 'amazon','redhat', 'centos', 'fedora'
   	package_name 'mod_ssl'
 	action :install
   when 'ubuntu', 'debian'
