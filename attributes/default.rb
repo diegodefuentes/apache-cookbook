@@ -34,7 +34,7 @@ default['apache']['PidFile'] =  'run/httpd.pid'
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-default['apache']['Timeout'] = 90
+default['apache']['Timeout'] = 75
 
 #                                                                                 
 # KeepAlive: Whether or not to allow persistent connections (more than            
