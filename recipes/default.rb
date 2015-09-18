@@ -27,6 +27,12 @@ package 'Install SSL' do
 end
 
 service 'httpd' do
+  case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
+  	service_name 'httpd'
+  when 'ubuntu', 'debian'
+    service_name 'apache2'
+  end
   action [ :enable ]
 end
 
