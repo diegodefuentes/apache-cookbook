@@ -6,7 +6,7 @@
 
 package 'Install Apache' do
   case node[:platform]
-  when 'redhat', 'centos', 'fedora'
+  when 'amazon','redhat', 'centos', 'fedora'
     package_name 'httpd'
 	action :install
   when 'ubuntu', 'debian'

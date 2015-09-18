@@ -6,7 +6,7 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: bento/centos-6.7
+  - name: fedora-22
     driver_config:
      network:
       - ['private_network', {ip: '172.16.1.5'}]
