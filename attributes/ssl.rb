@@ -10,7 +10,7 @@ default['apache']['Builtin'] = 'builtin'
 #   Inter-Process Session Cache:
 #   Configure the SSL Session Cache: First the mechanism
 #   to use and second the expiring timeout (in seconds).
-default['apache']['SSLSessionCacheTimeout'] = 600
+default['apache']['SSLSessionCacheTimeout'] = 300
 
 #   Semaphore:
 #   Configure the path to the mutual exclusion semaphore the

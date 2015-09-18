@@ -1,6 +1,5 @@
 .kitchen
 .kitchen/logs
-.kitchen.yml
 .kitchengood.yml
 .git
 .gitignore
