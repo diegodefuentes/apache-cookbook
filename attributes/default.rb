@@ -52,7 +52,7 @@ default['apache']['PidFile'] =  'run/httpd.pid'
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-default['apache']['Timeout'] = 60
+default['apache']['Timeout'] = 90
 
 #                                                                                 
 # KeepAlive: Whether or not to allow persistent connections (more than            
@@ -187,12 +187,8 @@ default['apache']['UseCanonicalName'] =  'Off'
 # documents. By default, all requests are taken from this directory, but
 # symbolic links and aliases may be used to point to other locations.
 #
-case node[:platform]
-when 'amazon','redhat', 'centos', 'fedora'
 default['apache']['DocumentRoot'] =  '/var/www/html'
-when 'ubuntu', 'debian'
-default['apache']['DocumentRoot'] =  '/var/www'
-end
+
 
 #
 # Each directory to which Apache has access can be configured with respect

@@ -62,6 +62,8 @@ end
 
 template "#{node['apache']['appfolder']}/envvars" do
   case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
+  action :nothing
   when 'ubuntu', 'debian'
   source 'envvars.erb'
   mode '0644'
@@ -71,6 +73,8 @@ end
 
 template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/charset.conf" do
   case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
+  action :nothing
   when 'ubuntu', 'debian'
   source 'charset.conf.erb'
   mode '0644'
@@ -80,6 +84,8 @@ end
 
 template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/ports.conf" do
   case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
+  action :nothing
   when 'ubuntu', 'debian'
   source 'ports.conf.erb'
   mode '0644'
@@ -89,6 +95,8 @@ end
 
 template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/security.conf" do
   case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
+  action :nothing
   when 'ubuntu', 'debian'
   source 'security.conf.erb'
   mode '0644'
@@ -98,6 +106,8 @@ end
 
 template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/serve-cgi-bin.conf" do
   case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
+  action :nothing
   when 'ubuntu', 'debian'
   source 'serve-cgi-bin.conf.erb'
   mode '0644'
