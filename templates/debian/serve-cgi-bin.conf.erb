@@ -8,9 +8,9 @@
 	</IfModule>
 
 	<IfDefine ENABLE_USR_LIB_CGI_BIN>
-		ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-		<Directory "/usr/lib/cgi-bin">
-			AllowOverride None
+		ScriptAlias /cgi-bin/ <%= node['apache']['ScriptsDirectory'] %>
+		<Directory "<%= node['apache']['ScriptsDirectory'] %>">
+			AllowOverride <%= node['apache']['OptionAllowOverride'] %>
 			Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
 			Require all granted
 		</Directory>

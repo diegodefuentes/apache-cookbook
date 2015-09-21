@@ -16,7 +16,7 @@
 
 ServerTokens <%= node['apache']['ServerTokens'] %>
 
-ServerRoot "<%= node['apache']['ServerRoot'] %>"
+ServerRoot "<%= node['apache']['appfolder'] %>"
 
 PidFile <%= node['apache']['PidFile'] %>
 

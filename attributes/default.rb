@@ -1,3 +1,22 @@
+### Platform dependent PATHs
+case node[:platform]
+when 'amazon','redhat', 'centos', 'fedora'
+  default['apache']['appfolder'] =  '/etc/httpd'
+  default['apache']['conffolder'] =  'conf.d'
+  default['apache']['conffile'] =  'httpd.conf'
+when 'ubuntu', 'debian'
+  default['apache']['appfolder'] =  '/etc/apache2'
+  default['apache']['conffolder'] =  'mods-available'
+  default['apache']['conffile'] =  'apache2.conf'
+  case node[:platform_version]
+  when '12.04'
+  default['apache']['extraconf'] =  'conf.d'
+  when '14.04'
+  default['apache']['extraconf'] =  'conf-available'
+  end
+end
+
+
 ### Section 1: Global Environment
 #
 # The directives in this section affect the overall operation of Apache,
@@ -21,7 +40,6 @@ default['apache']['ServerTokens'] =  'Prod'
 #
 # Do NOT add a slash at the end of the directory path.
 #
-default['apache']['ServerRoot'] =  '/etc/httpd'
 
 #
 # PidFile: The file in which the server should record its process
@@ -34,7 +52,7 @@ default['apache']['PidFile'] =  'run/httpd.pid'
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-default['apache']['Timeout'] = 75
+default['apache']['Timeout'] = 60
 
 #                                                                                 
 # KeepAlive: Whether or not to allow persistent connections (more than            
@@ -98,7 +116,12 @@ default['apache']['port'] = 80
 #
 # Load config files from the config directory "/etc/httpd/conf.d".
 #
+case node[:platform]
+when 'amazon','redhat', 'centos', 'fedora'
 default['apache']['Include'] =  'conf.d/*.conf'
+when 'ubuntu', 'debian'
+default['apache']['Include'] =  'conf-enabled/*.conf'
+end
 
 #
 # ExtendedStatus controls whether Apache will generate "full" status
@@ -119,9 +142,14 @@ default['apache']['ExtendedStatus'] =  'On'
 #  when the value of (unsigned)Group is above 60000;
 #  don't use Group #-1 on these systems!
 #
+case node[:platform]
+when 'amazon','redhat', 'centos', 'fedora'
 default['apache']['user'] =  'apache'
 default['apache']['group'] =  'apache'
-
+when 'ubuntu', 'debian'
+default['apache']['user'] =  'www-data'
+default['apache']['group'] =  'www-data'
+end
 
 #                                                                                 
 # ServerAdmin: Your address, where problems with the server should be             
@@ -180,7 +208,12 @@ default['apache']['IconsDirectory'] =  '/var/www/icons/'
 # The same rules about trailing "/" apply to ScriptAlias directives as to
 # Alias.
 #
+case node[:platform]
+when 'amazon','redhat', 'centos', 'fedora'
 default['apache']['ScriptsDirectory'] =  '/var/www/cgi-bin/'
+when 'ubuntu', 'debian'
+default['apache']['ScriptsDirectory'] =  '/usr/lib/cgi-bin/'
+end
 default['apache']['ErrorDirectory'] =  '/var/www/error/'
 
 #

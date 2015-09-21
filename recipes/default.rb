@@ -26,7 +26,7 @@ package 'Install SSL' do
   end
 end
 
-service 'httpd' do
+service 'Apache' do
   case node[:platform]
   when 'amazon','redhat', 'centos', 'fedora'
   	service_name 'httpd'
@@ -36,14 +36,71 @@ service 'httpd' do
   action [ :enable ]
 end
 
-template '/etc/httpd/conf/httpd.conf' do
-  source 'httpd.conf.erb'
-  mode '0644'
-  notifies :restart, 'service[httpd]'
- end
+execute 'enable_ssl' do
+	command 'a2enmod ssl'
+	action :nothing
+end
 
-template '/etc/httpd/conf.d/ssl.conf' do
+template "#{node['apache']['appfolder']}/#{node['apache']['conffile']}" do
+  source "#{node['apache']['conffile']}.erb"
+  mode '0644'
+  notifies :restart, 'service[Apache]'
+end
+
+template "#{node['apache']['appfolder']}/#{node['apache']['conffolder']}/ssl.conf" do
+  case node[:platform]
+  when 'amazon','redhat', 'centos', 'fedora'
   source 'ssl.conf.erb'
   mode '0644'
-  notifies :restart, 'service[httpd]'
- end
+  when 'ubuntu', 'debian'
+  notifies :run, 'execute[enable_ssl]', :immediately
+  source 'ssl.conf.erb'
+  mode '0644'
+  end
+  notifies :restart, 'service[Apache]'
+end
+
+template "#{node['apache']['appfolder']}/envvars" do
+  case node[:platform]
+  when 'ubuntu', 'debian'
+  source 'envvars.erb'
+  mode '0644'
+  end
+  notifies :restart, 'service[Apache]'
+end
+
+template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/charset.conf" do
+  case node[:platform]
+  when 'ubuntu', 'debian'
+  source 'charset.conf.erb'
+  mode '0644'
+  end
+  notifies :restart, 'service[Apache]'
+end
+
+template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/ports.conf" do
+  case node[:platform]
+  when 'ubuntu', 'debian'
+  source 'ports.conf.erb'
+  mode '0644'
+  end
+  notifies :restart, 'service[Apache]'
+end
+
+template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/security.conf" do
+  case node[:platform]
+  when 'ubuntu', 'debian'
+  source 'security.conf.erb'
+  mode '0644'
+  end
+  notifies :restart, 'service[Apache]'
+end
+
+template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/serve-cgi-bin.conf" do
+  case node[:platform]
+  when 'ubuntu', 'debian'
+  source 'serve-cgi-bin.conf.erb'
+  mode '0644'
+  end
+  notifies :restart, 'service[Apache]'
+end
