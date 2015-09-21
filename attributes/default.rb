@@ -95,11 +95,12 @@ default['apache']['MaxRequestsPerChild'] = 4000
 # ThreadsPerChild: constant number of worker threads in each server process
 # MaxRequestsPerChild: maximum number of requests a server process serves
 default['apache']['WorkerStartServers'] = 4
-default['apache']['WorkerMaxClients'] = 300
+default['apache']['WorkerMaxClients'] = 256
 default['apache']['MinSpareThreads'] = 25
 default['apache']['MaxSpareThreads'] = 75
 default['apache']['ThreadsPerChild'] = 25
 default['apache']['WorkerMaxRequestsPerChild'] = 0
+default['apache']['ThreadLimit'] = 64
 
 #
 # Listen: Allows you to bind Apache to specific IP addresses and/or
@@ -186,7 +187,12 @@ default['apache']['UseCanonicalName'] =  'Off'
 # documents. By default, all requests are taken from this directory, but
 # symbolic links and aliases may be used to point to other locations.
 #
+case node[:platform]
+when 'amazon','redhat', 'centos', 'fedora'
 default['apache']['DocumentRoot'] =  '/var/www/html'
+when 'ubuntu', 'debian'
+default['apache']['DocumentRoot'] =  '/var/www'
+end
 
 #
 # Each directory to which Apache has access can be configured with respect

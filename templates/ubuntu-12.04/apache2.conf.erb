@@ -26,7 +26,7 @@
 #	|-- mods-enabled
 #	|	|-- *.load
 #	|	`-- *.conf
-#	|-- conf-enabled
+#	|-- conf.d
 #	|	`-- *.conf
 # 	`-- sites-enabled
 #	 	`-- *.conf
@@ -72,10 +72,11 @@
 #
 ServerRoot "<%= node['apache']['appfolder'] %>"
 
-Mutex file:${APACHE_LOCK_DIR} default
+LockFile ${APACHE_LOCK_DIR}/accept.lock
 
 
 PidFile ${APACHE_PID_FILE}
+
 
 Timeout <%= node['apache']['Timeout'] %>
 
@@ -86,58 +87,87 @@ MaxKeepAliveRequests <%= node['apache']['MaxKeepAliveRequests'] %>
 KeepAliveTimeout <%= node['apache']['KeepAliveTimeout'] %>
 
 
+<IfModule mpm_prefork_module>
+StartServers       <%= node['apache']['StartServers'] %>
+MinSpareServers    <%= node['apache']['MinSpareServers'] %>
+MaxSpareServers    <%= node['apache']['MaxSpareServers'] %>
+MaxClients         <%= node['apache']['MaxClients'] %>
+MaxRequestsPerChild <%= node['apache']['MaxRequestsPerChild'] %>  
+</IfModule>
+
+
+<IfModule mpm_worker_module>
+StartServers       <%= node['apache']['WorkerStartServers'] %>
+MinSpareThreads    <%= node['apache']['MinSpareThreads'] %>
+MaxSpareThreads    <%= node['apache']['MaxSpareThreads'] %>
+ThreadLimit          <%= node['apache']['ThreadLimit'] %>
+ThreadsPerChild     <%= node['apache']['MaxSpareThreads'] %>
+MaxClients         <%= node['apache']['WorkerMaxClients'] %>
+MaxRequestsPerChild  <%= node['apache']['WorkerMaxRequestsPerChild'] %>
+</IfModule>
+
+# event MPM
+# StartServers: initial number of server processes to start
+# MinSpareThreads: minimum number of worker threads which are kept spare
+# MaxSpareThreads: maximum number of worker threads which are kept spare
+# ThreadsPerChild: constant number of worker threads in each server process
+# MaxClients: maximum number of simultaneous client connections
+# MaxRequestsPerChild: maximum number of requests a server process serves
+<IfModule mpm_event_module>
+StartServers       <%= node['apache']['WorkerStartServers'] %>
+MinSpareThreads    <%= node['apache']['MinSpareThreads'] %>
+MaxSpareThreads    <%= node['apache']['MaxSpareThreads'] %>
+ThreadLimit          <%= node['apache']['ThreadLimit'] %>
+ThreadsPerChild     <%= node['apache']['ThreadsPerChild'] %>
+MaxClients         <%= node['apache']['WorkerMaxClients'] %>
+MaxRequestsPerChild  <%= node['apache']['WorkerMaxRequestsPerChild'] %>
+</IfModule>
+
 # These need to be set in /etc/apache2/envvars
 User ${APACHE_RUN_USER}
 Group ${APACHE_RUN_GROUP}
 
+#
+# AccessFileName: The name of the file to look for in each directory
+# for additional configuration directives.  See also the AllowOverride
+# directive.
+#
+
+AccessFileName .htaccess
+
+#
+# The following lines prevent .htaccess and .htpasswd files from being 
+# viewed by Web clients. 
+#
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy all
+</Files>
+
+DefaultType <%= node['apache']['DefaultType'] %>
+
 HostnameLookups <%= node['apache']['HostnameLookups'] %>
 
-# ErrorLog: The location of the error log file.
-# If you do not specify an ErrorLog directive within a <VirtualHost>
-# container, error messages relating to that virtual host will be
-# logged here.  If you *do* define an error logfile for a <VirtualHost>
-# container, that host's errors will be logged there and not here.
-#
 ErrorLog ${APACHE_LOG_DIR}/error.log
 
 LogLevel <%= node['apache']['LogLevel'] %>
 
-IncludeOptional mods-enabled/*.load
-IncludeOptional mods-enabled/*.conf
+# Include module configuration:
+Include mods-enabled/*.load
+Include mods-enabled/*.conf
 
-Include ports.conf
+# Include all the user configurations:
+Include httpd.conf
 
+# Include ports listing
+# Include ports.conf
 
-<Directory <%= node['apache']['RootDirectory'] %>>
-	Options <%= node['apache']['OptionFollowSymlinks'] %>
-	AllowOverride <%= node['apache']['OptionAllowOverride'] %>
-	Require all denied
-</Directory>
-
-<Directory /usr/share>
-	AllowOverride <%= node['apache']['OptionAllowOverride'] %>
-	Require all granted
-</Directory>
-
-<Directory /var/www/>
-	Options <%= node['apache']['OptionIndexes'] %> <%= node['apache']['OptionFollowSymlinks'] %>
-	AllowOverride <%= node['apache']['OptionAllowOverride'] %>
-	Require all granted
-</Directory>
-
-#<Directory /srv/>
-#	Options Indexes <%= node['apache']['OptionFollowSymlinks'] %>
-#	AllowOverride <%= node['apache']['OptionAllowOverride'] %>
-#	Require all granted
-#</Directory>
-
-AccessFileName .htaccess
-
-<FilesMatch "^\.ht">
-	Require all denied
-</FilesMatch>
-
-
+#
+# The following directives define some format nicknames for use with
+# a CustomLog directive (see below).
+# If you are behind a reverse proxy, you might want to change %h into %{X-Forwarded-For}i
+#
 LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
 LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
 LogFormat "%h %l %u %t \"%r\" %>s %O" common
@@ -148,9 +178,7 @@ LogFormat "%{User-agent}i" agent
 # see README.Debian for details.
 
 # Include generic snippets of statements
-IncludeOptional <%= node['apache']['Include'] %>
+Include conf.d/*.conf
 
 # Include the virtual host configurations:
-IncludeOptional sites-enabled/*.conf
-
-# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+Include sites-enabled/
