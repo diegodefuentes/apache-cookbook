@@ -8,11 +8,10 @@ when 'ubuntu', 'debian'
   default['apache']['appfolder'] =  '/etc/apache2'
   default['apache']['conffolder'] =  'mods-available'
   default['apache']['conffile'] =  'apache2.conf'
+  default['apache']['extraconf'] =  'conf-available'
   case node[:platform_version]
   when '12.04'
   default['apache']['extraconf'] =  'conf.d'
-  when '14.04'
-  default['apache']['extraconf'] =  'conf-available'
   end
 end
 
@@ -52,7 +51,7 @@ default['apache']['PidFile'] =  'run/httpd.pid'
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-default['apache']['Timeout'] = 90
+default['apache']['Timeout'] = 60
 
 #                                                                                 
 # KeepAlive: Whether or not to allow persistent connections (more than            
