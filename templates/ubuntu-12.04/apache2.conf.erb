@@ -178,7 +178,7 @@ LogFormat "%{User-agent}i" agent
 # see README.Debian for details.
 
 # Include generic snippets of statements
-Include conf.d/*.conf
+Include <%= node['apache']['IncludeConf'] %>
 
 # Include the virtual host configurations:
 Include sites-enabled/

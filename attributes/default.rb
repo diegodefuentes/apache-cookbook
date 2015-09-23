@@ -118,9 +118,13 @@ default['apache']['port'] = 80
 #
 case node[:platform]
 when 'amazon','redhat', 'centos', 'fedora'
-default['apache']['Include'] =  'conf.d/*.conf'
+default['apache']['IncludeConf'] =  'conf.d/*.conf'
 when 'ubuntu', 'debian'
-default['apache']['Include'] =  'conf-enabled/*.conf'
+default['apache']['IncludeConf'] =  'conf-enabled/*.conf'
+case node[:platform_version]
+when '12.04'
+default['apache']['IncludeConf'] =  'conf.d/*.conf'
+end
 end
 
 #
