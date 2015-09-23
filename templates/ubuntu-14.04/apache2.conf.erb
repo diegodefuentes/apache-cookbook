@@ -36,7 +36,7 @@ Include ports.conf
 </Directory>
 
 <Directory /usr/share>
-	AllowOverride None
+	AllowOverride <%= node['apache']['OptionAllowOverride'] %>
 	Require all granted
 </Directory>
 
@@ -47,13 +47,13 @@ Include ports.conf
 </Directory>
 
 #<Directory /srv/>
-#	Options Indexes FollowSymLinks
-#	AllowOverride None
+#	Options <%= node['apache']['OptionIndexes'] %> <%= node['apache']['OptionFollowSymlinks'] %>
+#	AllowOverride <%= node['apache']['OptionAllowOverride'] %>
 #	Require all granted
 #</Directory>
 
 
-AccessFileName .htaccess
+AccessFileName <%= node['apache']['AccessFileName'] %>
 
 
 <FilesMatch "^\.ht">

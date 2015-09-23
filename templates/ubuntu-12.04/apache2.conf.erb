@@ -133,15 +133,15 @@ Group ${APACHE_RUN_GROUP}
 # directive.
 #
 
-AccessFileName .htaccess
+AccessFileName <%= node['apache']['AccessFileName'] %>
 
 #
 # The following lines prevent .htaccess and .htpasswd files from being 
 # viewed by Web clients. 
 #
 <Files ~ "^\.ht">
-    Order allow,deny
-    Deny from all
+    Order <%= node['apache']['Order'] %>
+    Deny <%= node['apache']['Deny'] %>
     Satisfy all
 </Files>
 
