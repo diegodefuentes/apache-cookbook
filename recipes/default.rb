@@ -2,7 +2,8 @@
 # Cookbook Name:: apache_softtek
 # Recipe:: default
 #
-# Copyright (c) 2015 The Authors, All Rights Reserved.
+# Copyright (c) 2015 Diego De Fuentes Ceballos,
+# Softtek All Rights Reserved.
 
 package 'Install Apache' do
   case node[:platform]

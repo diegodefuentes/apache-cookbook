@@ -160,7 +160,7 @@ end
 # e-mailed.  This address appears on some server-generated pages, such            
 # as error documents.  e.g. admin@your-domain.com                                 
 #                                                                                 
-default['apache']['ServerAdmin'] =  'root@localhost'
+default['apache']['ServerAdmin'] =  'admin@example.com'
 
 #
 # ServerName gives the name and port that the server uses to identify itself.
