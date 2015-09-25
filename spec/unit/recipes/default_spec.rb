@@ -39,12 +39,12 @@ describe 'apache_softtek::default' do
 	
 	it 'restart httpd' do
       template = chef_run.template('/etc/httpd/conf/httpd.conf')
-      expect(template).to notify('service[httpd]').to(:restart)
+      expect(template).to notify('service[Apache]').to(:restart)
     end
 	
 	it 'restart httpd with ssl' do
       template = chef_run.template('/etc/httpd/conf.d/ssl.conf')
-      expect(template).to notify('service[httpd]').to(:restart)
+      expect(template).to notify('service[Apache]').to(:restart)
     end
 	
   end

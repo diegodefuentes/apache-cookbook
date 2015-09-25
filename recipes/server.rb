@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: apache_softtek
-# Recipe:: default
+# Recipe:: server
 #
 # Copyright (c) 2015 Diego De Fuentes Ceballos,
 # Softtek All Rights Reserved.
@@ -16,17 +16,6 @@ package 'Install Apache' do
   end
 end
 
-package 'Install SSL' do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  	package_name 'mod_ssl'
-	action :install
-  when 'ubuntu', 'debian'
-    package_name 'openssl'
-	action :install
-  end
-end
-
 service 'Apache' do
   case node[:platform]
   when 'amazon','redhat', 'centos', 'fedora'
@@ -35,11 +24,6 @@ service 'Apache' do
     service_name 'apache2'
   end
   action [ :enable ]
-end
-
-execute 'enable_ssl' do
-	command 'a2enmod ssl'
-	action :nothing
 end
 
 template "#{node['apache']['appfolder']}/#{node['apache']['conffile']}" do
@@ -53,15 +37,4 @@ end
   include_recipe "#{cookbook_name}::debian"
   end
 
-template "#{node['apache']['appfolder']}/#{node['apache']['conffolder']}/ssl.conf" do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  source 'ssl.conf.erb'
-  mode '0644'
-  when 'ubuntu', 'debian'
-  notifies :run, 'execute[enable_ssl]', :immediately
-  source 'ssl.conf.erb'
-  mode '0644'
-  end
-  notifies :restart, 'service[Apache]'
-end
+  include_recipe "#{cookbook_name}::mod_ssl"
