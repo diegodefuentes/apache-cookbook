@@ -48,6 +48,11 @@ template "#{node['apache']['appfolder']}/#{node['apache']['conffile']}" do
   notifies :restart, 'service[Apache]'
 end
 
+  case node[:platform]
+  when 'ubuntu', 'debian'
+  include_recipe "#{cookbook_name}::debian"
+  end
+
 template "#{node['apache']['appfolder']}/#{node['apache']['conffolder']}/ssl.conf" do
   case node[:platform]
   when 'amazon','redhat', 'centos', 'fedora'
@@ -56,61 +61,6 @@ template "#{node['apache']['appfolder']}/#{node['apache']['conffolder']}/ssl.con
   when 'ubuntu', 'debian'
   notifies :run, 'execute[enable_ssl]', :immediately
   source 'ssl.conf.erb'
-  mode '0644'
-  end
-  notifies :restart, 'service[Apache]'
-end
-
-template "#{node['apache']['appfolder']}/envvars" do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  action :nothing
-  when 'ubuntu', 'debian'
-  source 'envvars.erb'
-  mode '0644'
-  end
-  notifies :restart, 'service[Apache]'
-end
-
-template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/charset.conf" do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  action :nothing
-  when 'ubuntu', 'debian'
-  source 'charset.conf.erb'
-  mode '0644'
-  end
-  notifies :restart, 'service[Apache]'
-end
-
-template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/ports.conf" do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  action :nothing
-  when 'ubuntu', 'debian'
-  source 'ports.conf.erb'
-  mode '0644'
-  end
-  notifies :restart, 'service[Apache]'
-end
-
-template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/security.conf" do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  action :nothing
-  when 'ubuntu', 'debian'
-  source 'security.conf.erb'
-  mode '0644'
-  end
-  notifies :restart, 'service[Apache]'
-end
-
-template "#{node['apache']['appfolder']}/#{node['apache']['extraconf']}/serve-cgi-bin.conf" do
-  case node[:platform]
-  when 'amazon','redhat', 'centos', 'fedora'
-  action :nothing
-  when 'ubuntu', 'debian'
-  source 'serve-cgi-bin.conf.erb'
   mode '0644'
   end
   notifies :restart, 'service[Apache]'
