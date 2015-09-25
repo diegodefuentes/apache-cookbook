@@ -26,7 +26,7 @@ describe 'apache_softtek::default' do
 	end
 	
 	it 'Enables httpd' do
-	  expect(chef_run).to enable_service('httpd') 
+	  expect(chef_run).to enable_service('Apache') 
 	end
 	
 	it 'Modifies httpd.conf' do
