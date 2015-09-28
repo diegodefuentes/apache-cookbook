@@ -6,3 +6,4 @@
 # Softtek All Rights Reserved.
 
 include_recipe "#{cookbook_name}::server"
+include_recipe "#{cookbook_name}::mod_ssl"

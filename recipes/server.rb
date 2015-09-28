@@ -36,5 +36,3 @@ end
   when 'ubuntu', 'debian'
   include_recipe "#{cookbook_name}::debian"
   end
-
-  include_recipe "#{cookbook_name}::mod_ssl"
