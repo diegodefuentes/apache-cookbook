@@ -4,48 +4,26 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-require 'spec_helper'
+require 'chefspec'
 
-describe 'apache_softtek::default' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
-
-    it 'converges successfully' do
+describe 'include_recipe::default' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  
+  it 'converges successfully' do
       expect { chef_run }.to_not raise_error
-    end
-	
-	it 'installs httpd' do
-	  expect(chef_run).to install_package('Install Apache') 
-	end
-	
-	it 'installs ssl' do
-	  expect(chef_run).to install_package('Install SSL') 
-	end
-	
-	it 'Enables httpd' do
-	  expect(chef_run).to enable_service('Apache') 
-	end
-	
-	it 'Modifies httpd.conf' do
-	  expect(chef_run).to create_template('/etc/httpd/conf/httpd.conf') 
-	end	
-		
-    it 'Modifies ssl.conf' do
-	  expect(chef_run).to create_template('/etc/httpd/conf.d/ssl.conf') 
-	end	
-	
-	it 'restart httpd' do
-      template = chef_run.template('/etc/httpd/conf/httpd.conf')
-      expect(template).to notify('service[Apache]').to(:restart)
-    end
-	
-	it 'restart httpd with ssl' do
-      template = chef_run.template('/etc/httpd/conf.d/ssl.conf')
-      expect(template).to notify('service[Apache]').to(:restart)
-    end
-	
   end
+
+  it 'includes SELinux::disabled recipe' do
+    expect(chef_run).to include_recipe('selinux::disabled')
+  end
+  it 'includes the Apache Softtek Server recipe' do
+    expect(chef_run).to include_recipe('apache:softtek::server')
+  end
+  it 'includes the MOD SSL Server recipe' do
+    expect(chef_run).to include_recipe('apache:softtek::mod_ssl')
+  end
+  it 'includes the Firewall recipe' do
+    expect(chef_run).to include_recipe('apache:softtek::firewall')
+  end
+  
 end

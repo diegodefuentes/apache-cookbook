@@ -6,7 +6,7 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: centos-5.11
+  - name: centos-6.6
     driver_config:
      network:
       - ['private_network', {ip: '172.16.1.5'}]
