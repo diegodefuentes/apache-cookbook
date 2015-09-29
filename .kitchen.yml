@@ -6,7 +6,7 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: bento/ubuntu-14.04
+  - name: centos-5.11
     driver_config:
      network:
       - ['private_network', {ip: '172.16.1.5'}]

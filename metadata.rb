@@ -6,5 +6,5 @@ description 'Installs/Configures apache para clientes Softtek'
 long_description 'Installs/Configures apache_softtek'
 version '0.1.3'
 
-
+depends 'selinux', '~> 0.9.0'
 depends 'iptables', '~> 1.0.0'
