@@ -14,7 +14,7 @@ describe 'include_recipe::default' do
   end
 
   it 'includes SELinux::disabled recipe' do
-    expect(chef_run).to include_recipe('selinux::disabled')
+    expect(chef_run).to include_recipe("selinux::disabled")
   end
   it 'includes the Apache Softtek Server recipe' do
     expect(chef_run).to include_recipe('apache:softtek::server')
