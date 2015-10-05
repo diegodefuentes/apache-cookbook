@@ -233,7 +233,7 @@ default['apache']['ErrorDirectory'] =  '/var/www/error/'
 # http://httpd.apache.org/docs/2.2/mod/core.html#options
 # for more information.
 #
-default['apache']['OptionFollowSymlinks'] =  'FollowSymLinks'
+default['apache']['OptionFollowSymlinks'] =  '+FollowSymLinks'
 #
 # AllowOverride controls what directives may be placed in .htaccess files.
 # It can be "All", "None", or any combination of the keywords:
