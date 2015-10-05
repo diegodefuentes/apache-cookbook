@@ -6,6 +6,4 @@ DEPENDENCIES
 GRAPH
   apache_softtek (0.1.3)
     iptables (~> 1.0.0)
-    selinux (~> 0.9.0)
   iptables (1.0.0)
-  selinux (0.9.0)

@@ -240,7 +240,7 @@ default['apache']['OptionFollowSymlinks'] =  'FollowSymLinks'
 #   Options FileInfo AuthConfig Limit
 #
 default['apache']['OptionAllowOverride'] =  'None'
-default['apache']['OptionIndexes'] =  'Indexes'
+default['apache']['OptionIndexes'] =  '-Indexes'
 default['apache']['OptionMultiViews'] =  'MultiViews'
 default['apache']['OptionNone'] =  'None'
 default['apache']['IncludesNoExec'] =  'IncludesNoExec'
