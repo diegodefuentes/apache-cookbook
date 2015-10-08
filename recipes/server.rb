@@ -9,11 +9,10 @@ package 'Install Apache' do
   case node[:platform]
   when 'amazon','redhat', 'centos', 'fedora'
     package_name 'httpd'
-	action :install
   when 'ubuntu', 'debian'
     package_name 'apache2'
-	action :install
   end
+  	action :upgrade
 end
 
 service 'Apache' do
