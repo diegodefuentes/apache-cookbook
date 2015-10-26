@@ -4,12 +4,16 @@ driver:
 
 provisioner:
   name: chef_zero
+  http_proxy: http://cis-cinci-pitc-ssow.proxy.corporate.ge.com:80
+  https_proxy: http://cis-cinci-pitc-ssow.proxy.corporate.ge.com:80
 
 platforms:
-  - name: centos-7.1
-    driver_config:
-     network:
-      - ['private_network', {ip: '172.16.1.5'}]
+  - name: ubuntu-14.04
+    driver:
+      box: ubuntu-14.04
+      network:
+      - ["forwarded_port", {guest: 80, host: 8000}]
+      - ["forwarded_port", {guest: 8080, host: 8081}]
 
 suites:
   - name: Apache

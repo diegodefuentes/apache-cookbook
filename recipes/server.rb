@@ -12,7 +12,7 @@ package 'Install Apache' do
   when 'ubuntu', 'debian'
     package_name 'apache2'
   end
-  	action :upgrade
+  	action :install
 end
 
 service 'Apache' do
